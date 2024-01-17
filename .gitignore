@@ -1,0 +1,5 @@
+.idea
+/venv
+bot_log.log
+input
+core/__pycache__/
