@@ -3,6 +3,7 @@ import logging
 
 from core.settings import settings
 from core.dispatcher import bot, dp
+from core.handlers import commands
 
 
 async def start_bot():
@@ -19,7 +20,6 @@ async def main():
 
     dp.startup.register(start_bot)  # Отправляет сообщение админу когда бот запускается
     dp.shutdown.register(stop_bot)  # Отправляет сообщение админу когда бот останавлявается
-
     try:
         await dp.start_polling(bot)
     finally:
