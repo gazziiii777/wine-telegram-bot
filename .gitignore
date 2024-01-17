@@ -3,3 +3,7 @@
 bot_log.log
 input
 core/__pycache__/
+core/db/__pycache__/
+core/handlers/__pycache__/
+core/keyboards/__pycache__/
+core/db/sdsd.py
