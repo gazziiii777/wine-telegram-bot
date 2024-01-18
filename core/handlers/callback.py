@@ -60,7 +60,7 @@ async def sparkling_wine_white(callback: CallbackQuery):
             path=wine_list[count][5]
         ),
         reply_markup=assortment_keyboard.carousel,
-        caption=f"<b>{wine_list[count][3]}</b>\n<b>Артикул:</b> {wine_list[count][1]}\n<b>Производитель:</b> {wine_list[count][2]}\n{f'<b>Цена:</b> <s>{wine_list[count][6]}</s>' if wine_list[count][7] != 0 else f'<b>Цена:</b> {wine_list[count][6]}'}\n{f'<b>🔥 Цена со скидкой:</b> {wine_list[count][7]} 🔥' if wine_list[count][7] != 0 else ''}\n--------------------------------------\n🛒 <b>Корзина</b>\n <i>{f"В корзине {shopping_cart} шт.\n На сумму: {shopping_cart*wine_list[count][7] if wine_list[count][7] != 0 else shopping_cart*wine_list[count][6]}" if shopping_cart != 0 else "В крзине нету этого товара"}</i>"
+        caption=f"<b>{wine_list[count][3]}</b>\n<b>Артикул:</b> {wine_list[count][1]}\n<b>Производитель:</b> {wine_list[count][2]}\n{f'<b>Цена:</b> <s>{wine_list[count][6]}</s>' if wine_list[count][7] != 0 else f'<b>Цена:</b> {wine_list[count][6]}'}\n{f'<b>🔥 Цена со скидкой:</b> {wine_list[count][7]} 🔥' if wine_list[count][7] != 0 else ''}\n--------------------------------------\n🛒 <b>Корзина</b>\n <i>{f"В корзине {shopping_cart} шт.\n На сумму: {shopping_cart*wine_list[count][7] if wine_list[count][7] != 0 else shopping_cart*wine_list[count][6]}" if shopping_cart != 0 else "В крзине нету этого товара"}</i>" м 
     )
 
 

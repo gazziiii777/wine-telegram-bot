@@ -39,6 +39,12 @@ async def shopping_delete_item(user_id, vendor_code, wine_name):
         cursor.execute(
             f'UPDATE "{user_id}" SET count = CASE WHEN count > 0 THEN count - 1 ELSE 0 END WHERE vendor_code = ?',
             (vendor_code,))
+        cursor.execute(f'SELECT count FROM "{user_id}" WHERE vendor_code = ?', (vendor_code,))
+        updated_count = cursor.fetchone()[0]
+        if updated_count == 0:
+            cursor.execute(f'DELETE FROM "{user_id}" WHERE vendor_code = ?', (vendor_code,))
+            conn.commit()
+            return updated_count
     else:
         # Если статья не существует, возвращаем 0
         updated_count = 0
