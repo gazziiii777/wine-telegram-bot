@@ -15,7 +15,7 @@ buttons_1 = [
         InlineKeyboardButton(text='Корзина', callback_data='add_items')
     ],
     [
-        InlineKeyboardButton(text='назад', callback_data='sparkling_wine')
+        InlineKeyboardButton(text='Назад', callback_data='sparkling_wine_back')
     ],
 ]
 buttons_2 = [

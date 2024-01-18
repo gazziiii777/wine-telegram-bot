@@ -56,12 +56,12 @@ async def sparkling_wine_white(callback: CallbackQuery):
             path=wine_list[count][5]
         ),
         reply_markup=assortment_keyboard.carousel,
-        caption=f'тгтгг'
+        caption=f"<b>Ca' del Cino, Vino Spumante Dolce</b>\n<b>Артикул:</b> {wine_list[0][1]}\n<b>Производитель:</b> {wine_list[0][2]}\n{f'<b>Цена:</b> <s>{wine_list[0][6]}</s>' if wine_list[0][7] != 0 else f'<b>Цена:</b> {wine_list[0][6]}'}\n{f'<b>🔥 Цена со скидкой:</b> {wine_list[0][7]} 🔥' if wine_list[0][7] != 0 else ' '}\n\n--------------------------------------\n🛒 <b>Корзина</b>\n <i>В крзине нету этого товара</i>"
     )
 
 
 @dp.callback_query(F.data == "forward")
-async def sparkling_wine_white(callback: CallbackQuery):
+async def add_item(callback: CallbackQuery):
     global count
     cat = FSInputFile(wine_list[0][5])
     await bot.edit_message_media(
