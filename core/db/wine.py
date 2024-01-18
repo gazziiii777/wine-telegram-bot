@@ -6,5 +6,4 @@ async def assortment_wine(wine):
     cursor = conn.cursor()
     cursor.execute(f"SELECT * FROM {wine}")
     rows = cursor.fetchall()
-    print(rows)
     return rows

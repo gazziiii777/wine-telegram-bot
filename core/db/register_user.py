@@ -22,6 +22,15 @@ async def register_user(user_id, username):
     conn.close()
 
 
+async def creating_a_shopping_cart(user_id):
+    conn = sqlite3.connect('core/db/data_bases/shopping_cart.db')
+    cursor = conn.cursor()
+    cursor.execute(f'''CREATE TABLE IF NOT EXISTS "{user_id}"
+                      (id INTEGER PRIMARY KEY, wine_name TEXT, vendor_code TEXT, count INTEGER)''')
+
+    conn.close()
+
+
 async def profile_info(user_id):
     conn = sqlite3.connect('core/db/data_bases/users.db')
     cursor = conn.cursor()
