@@ -3,7 +3,7 @@ import logging
 
 from core.settings import settings
 from core.dispatcher import bot, dp
-from core.handlers import commands
+from core.handlers import commands, callback
 
 
 async def start_bot():
