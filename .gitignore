@@ -7,3 +7,4 @@ core/db/__pycache__/
 core/handlers/__pycache__/
 core/keyboards/__pycache__/
 core/db/sdsd.py
+core/srt/__pycache__/
