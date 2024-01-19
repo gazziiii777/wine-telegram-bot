@@ -5,7 +5,8 @@ from core.dispatcher import dp, bot
 from core.keyboards import main_menu_keyboard, profile_keyboard, assortment_keyboard, basket_keyboard
 from core.db.register_user import profile_info
 from core.db.wine import assortment_wine
-from core.db.shoping_cart import shopping_cart_checker, shopping_add_item, shopping_delete_item, shopping_cart_get
+from core.db.shoping_cart import shopping_cart_checker, shopping_add_item, shopping_delete_item, shopping_cart_get, \
+    increase_count
 from core.srt.generate_str import wine_info_str, placing_an_order, shopping_cart_basket_str
 
 wine_list = []
@@ -136,14 +137,62 @@ async def forward(callback: CallbackQuery):
 
 
 @dp.callback_query(F.data == "back")
+@dp.callback_query(F.data == "back_basket")
 async def back(callback: CallbackQuery):
     global count
     global shopping_cart
-    if count != 0:
-        count -= 1
+    if callback.data == "back":
+        if count != 0:
+            count -= 1
+            await callback.answer()
+            shopping_cart = await shopping_cart_checker(callback.from_user.id, wine_list[count][1])
+            wine_str = await wine_info_str(wine_list, wine_list_info, shopping_cart, count)
+            await bot.edit_message_media(
+                chat_id=callback.message.chat.id,
+                message_id=callback.message.message_id,
+                media=InputMediaPhoto(
+                    media=FSInputFile(wine_list[count][5]),
+                    caption=wine_str
+                ),
+                reply_markup=assortment_keyboard.carousel,
+            )
+        else:
+            await callback.answer(
+                text="asdadsda",
+                show_alert=True
+            )
+    if callback.data == "back_basket":
+        global shopping_cart_basket
+        if count != 0:
+            await callback.answer()
+            count -= 1
+            basket_str = await shopping_cart_basket_str(shopping_cart_basket, count)
+            await bot.edit_message_media(
+                chat_id=callback.message.chat.id,
+                message_id=callback.message.message_id,
+                media=InputMediaPhoto(
+                    media=FSInputFile(f"core/db/data_bases/images/{shopping_cart_basket[count][2]}.jpg"),
+                    caption=basket_str
+                ),
+                reply_markup=basket_keyboard.basket_carousel,
+            )
+        else:
+            await callback.answer(
+                text="asasdasdsadadsda",
+                show_alert=True
+            )
+
+
+@dp.callback_query(F.data == "add_item")
+@dp.callback_query(F.data == "add_item_basket")
+async def add_item(callback: CallbackQuery):
+    global wine_list
+    global shopping_cart_basket
+    if callback.data == "add_item":
         await callback.answer()
-        shopping_cart = await shopping_cart_checker(callback.from_user.id, wine_list[count][1])
-        wine_str = await wine_info_str(wine_list, wine_list_info, shopping_cart, count)
+        shopping_cart_add = await shopping_add_item(callback.from_user.id, wine_list[count][1], wine_list[count][3], *[
+            wine_list[count][-1] if wine_list[count][-1] != 0 else wine_list[count][-2]])
+        wine_str = await wine_info_str(wine_list, wine_list_info, shopping_cart_add, count)
         await bot.edit_message_media(
             chat_id=callback.message.chat.id,
             message_id=callback.message.message_id,
@@ -153,47 +202,62 @@ async def back(callback: CallbackQuery):
             ),
             reply_markup=assortment_keyboard.carousel,
         )
-    else:
-        await callback.answer(
-            text="asdadsda",
-            show_alert=True
+    if callback.data == 'add_item_basket':
+        print(shopping_cart_basket[count][-2])
+        await callback.answer()
+        await increase_count(callback.from_user.id, shopping_cart_basket[count][2])
+        shopping_cart_basket = await shopping_cart_get(callback.from_user.id)
+        print(shopping_cart_basket[count][-2])
+        basket_str = await shopping_cart_basket_str(shopping_cart_basket, count)
+        await bot.edit_message_media(
+            chat_id=callback.message.chat.id,
+            message_id=callback.message.message_id,
+            media=InputMediaPhoto(
+                media=FSInputFile(f"core/db/data_bases/images/{shopping_cart_basket[count][2]}.jpg"),
+                caption=basket_str
+            ),
+            reply_markup=basket_keyboard.basket_carousel,
         )
 
 
-@dp.callback_query(F.data == "add_item")
-async def add_item(callback: CallbackQuery):
-    global wine_list
-    await callback.answer()
-    shopping_cart_add = await shopping_add_item(callback.from_user.id, wine_list[count][1], wine_list[count][3], *[
-        wine_list[count][-1] if wine_list[count][-1] != 0 else wine_list[count][-2]])
-    wine_str = await wine_info_str(wine_list, wine_list_info, shopping_cart_add, count)
-    await bot.edit_message_media(
-        chat_id=callback.message.chat.id,
-        message_id=callback.message.message_id,
-        media=InputMediaPhoto(
-            media=FSInputFile(wine_list[count][5]),
-            caption=wine_str
-        ),
-        reply_markup=assortment_keyboard.carousel,
-    )
-
-
 @dp.callback_query(F.data == "delete_item")
+@dp.callback_query(F.data == "delete_item_basket")
 async def delete_item(callback: CallbackQuery):
     global wine_list
     global count
-    await callback.answer()
-    shopping_cart_delete = await shopping_delete_item(callback.from_user.id, wine_list[count][1], wine_list[count][3])
-    wine_str = await wine_info_str(wine_list, wine_list_info, shopping_cart_delete, count)
-    await bot.edit_message_media(
-        chat_id=callback.message.chat.id,
-        message_id=callback.message.message_id,
-        media=InputMediaPhoto(
-            media=FSInputFile(wine_list[count][5]),
-            caption=wine_str
-        ),
-        reply_markup=assortment_keyboard.carousel,
-    )
+    global shopping_cart_basket
+    if callback.data == "delete_item":
+        await callback.answer()
+        shopping_cart_delete = await shopping_delete_item(callback.from_user.id, wine_list[count][1])
+        wine_str = await wine_info_str(wine_list, wine_list_info, shopping_cart_delete, count)
+        await bot.edit_message_media(
+            chat_id=callback.message.chat.id,
+            message_id=callback.message.message_id,
+            media=InputMediaPhoto(
+                media=FSInputFile(wine_list[count][5]),
+                caption=wine_str
+            ),
+            reply_markup=assortment_keyboard.carousel,
+        )
+    if callback.data == 'delete_item_basket':
+        shopping_cart_delete = await shopping_delete_item(callback.from_user.id, shopping_cart_basket[count][2])
+        if shopping_cart_delete == 0:
+            count -= 1
+            await callback.answer(
+                text="Удален"
+            )
+        await callback.answer()
+        shopping_cart_basket = await shopping_cart_get(callback.from_user.id)
+        basket_str = await shopping_cart_basket_str(shopping_cart_basket, count)
+        await bot.edit_message_media(
+            chat_id=callback.message.chat.id,
+            message_id=callback.message.message_id,
+            media=InputMediaPhoto(
+                media=FSInputFile(f"core/db/data_bases/images/{shopping_cart_basket[count][2]}.jpg"),
+                caption=basket_str
+            ),
+            reply_markup=basket_keyboard.basket_carousel,
+        )
 
 
 @dp.callback_query(F.data == "sparkling_wine_back")
@@ -224,7 +288,7 @@ async def basket(callback: CallbackQuery):
         )
     else:
         await callback.answer(
-            text="Нету",
+            text="Корзина пуста",
             show_alert=True
         )
 

@@ -20,8 +20,8 @@ buttons_2 = [
     ],
     [
 
-        InlineKeyboardButton(text='-', callback_data='delete_item'),
-        InlineKeyboardButton(text='+', callback_data='add_item')
+        InlineKeyboardButton(text='-', callback_data='delete_item_basket'),
+        InlineKeyboardButton(text='+', callback_data='add_item_basket')
     ],
     [
         InlineKeyboardButton(text='Оформить заказ', callback_data='сheckout')

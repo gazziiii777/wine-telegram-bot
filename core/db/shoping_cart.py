@@ -19,6 +19,14 @@ async def shopping_cart_get(user_id):
     return row
 
 
+async def increase_count(user_id, vendor_code):
+    conn = sqlite3.connect('core/db/data_bases/shopping_cart.db')
+    cursor = conn.cursor()
+    cursor.execute(f"UPDATE '{user_id}' SET count = count + 1 WHERE vendor_code = ?", (vendor_code,))
+    conn.commit()
+    conn.close()
+
+
 async def shopping_add_item(user_id, vendor_code, wine_name, wine_cost):
     conn = sqlite3.connect('core/db/data_bases/shopping_cart.db')
     cursor = conn.cursor()
@@ -38,7 +46,7 @@ async def shopping_add_item(user_id, vendor_code, wine_name, wine_cost):
     return updated_count
 
 
-async def shopping_delete_item(user_id, vendor_code, wine_name):
+async def shopping_delete_item(user_id, vendor_code):
     conn = sqlite3.connect('core/db/data_bases/shopping_cart.db')
     cursor = conn.cursor()
     cursor.execute(f'SELECT * FROM "{user_id}" WHERE vendor_code = ?', (vendor_code,))
@@ -53,7 +61,7 @@ async def shopping_delete_item(user_id, vendor_code, wine_name):
         if updated_count == 0:
             cursor.execute(f'DELETE FROM "{user_id}" WHERE vendor_code = ?', (vendor_code,))
             conn.commit()
-            return updated_count
+            return 0
     else:
         # Если статья не существует, возвращаем 0
         updated_count = 0
