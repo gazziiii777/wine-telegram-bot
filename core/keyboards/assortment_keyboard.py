@@ -12,10 +12,10 @@ buttons_1 = [
         InlineKeyboardButton(text='+', callback_data='add_item')
     ],
     [
-        InlineKeyboardButton(text='Корзина', callback_data='add_items')
+        InlineKeyboardButton(text='Корзина', callback_data='basket')
     ],
     [
-        InlineKeyboardButton(text='Назад', callback_data='sparkling_wine_back')
+        InlineKeyboardButton(text='Назад', callback_data='assortment_back')
     ],
 ]
 buttons_2 = [
@@ -23,7 +23,7 @@ buttons_2 = [
         InlineKeyboardButton(text='Игристое вино', callback_data='sparkling_wine'),
     ],
     [
-        InlineKeyboardButton(text='Белые вина', callback_data='delete_items'),
+        InlineKeyboardButton(text='Белые вина', callback_data='white_wine'),
     ],
     [
         InlineKeyboardButton(text='Розовые вина', callback_data='add_items')

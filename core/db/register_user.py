@@ -26,7 +26,7 @@ async def creating_a_shopping_cart(user_id):
     conn = sqlite3.connect('core/db/data_bases/shopping_cart.db')
     cursor = conn.cursor()
     cursor.execute(f'''CREATE TABLE IF NOT EXISTS "{user_id}"
-                      (id INTEGER PRIMARY KEY, wine_name TEXT, vendor_code TEXT, count INTEGER)''')
+                      (id INTEGER PRIMARY KEY, wine_name TEXT, vendor_code TEXT, count INTEGER, cost INTEGER)''')
 
     conn.close()
 

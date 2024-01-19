@@ -8,3 +8,4 @@ core/handlers/__pycache__/
 core/keyboards/__pycache__/
 core/db/sdsd.py
 core/srt/__pycache__/
+core/utils/__pycache__/

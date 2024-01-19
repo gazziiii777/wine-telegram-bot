@@ -7,10 +7,19 @@ async def shopping_cart_checker(user_id, value):
     cursor.execute(f"SELECT * FROM '{user_id}' WHERE vendor_code = ?", (value,))
     row = cursor.fetchone()
     conn.close()
-    return row[-1] if row else 0
+    return row[-2] if row else 0
 
 
-async def shopping_add_item(user_id, vendor_code, wine_name):
+async def shopping_cart_get(user_id):
+    conn = sqlite3.connect('core/db/data_bases/shopping_cart.db')
+    cursor = conn.cursor()
+    cursor.execute(f"SELECT * FROM '{user_id}'")
+    row = cursor.fetchall()
+    conn.close()
+    return row
+
+
+async def shopping_add_item(user_id, vendor_code, wine_name, wine_cost):
     conn = sqlite3.connect('core/db/data_bases/shopping_cart.db')
     cursor = conn.cursor()
     cursor.execute(f'SELECT * FROM "{user_id}" WHERE vendor_code = ?', (vendor_code,))
@@ -20,8 +29,8 @@ async def shopping_add_item(user_id, vendor_code, wine_name):
         cursor.execute(f'UPDATE "{user_id}" SET count = count + 1 WHERE vendor_code = ?', (vendor_code,))
     else:
         # Если статья не существует, добавляем новую строку
-        cursor.execute(f'INSERT INTO "{user_id}" (wine_name, vendor_code, count) VALUES (?, ?, 1)',
-                       (wine_name, vendor_code))
+        cursor.execute(f'INSERT INTO "{user_id}" (wine_name, vendor_code, count, cost) VALUES (?, ?, 1, ?)',
+                       (wine_name, vendor_code, wine_cost))
     conn.commit()
 
     cursor.execute(f'SELECT count FROM "{user_id}" WHERE vendor_code = ?', (vendor_code,))
