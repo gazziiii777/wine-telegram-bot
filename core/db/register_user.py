@@ -31,6 +31,25 @@ async def creating_a_shopping_cart(user_id):
     conn.close()
 
 
+async def creating_user_promo_code(user_id):
+    conn = sqlite3.connect('core/db/data_bases/users.db')
+    cursor = conn.cursor()
+    cursor.execute(f'''CREATE TABLE IF NOT EXISTS "{user_id}_promo"
+                      (id INTEGER PRIMARY KEY, promo_code TEXT)''')
+    # Проверка наличия строки с id = 1
+    cursor.execute(f"SELECT * FROM '{user_id}_promo' WHERE id = 1")
+    row = cursor.fetchone()
+    if row:
+        cursor.execute(f"UPDATE \"{user_id}_promo\" SET promo_code = ? WHERE id = 1", (0,))
+        conn.commit()
+    else:
+        # Если строки с id = 1 нет, то выполняем добавление
+        cursor.execute(f"INSERT INTO \"{user_id}_promo\" (promo_code) VALUES (?)", (0,))
+        conn.commit()
+
+    conn.close()
+
+
 async def profile_info(user_id):
     conn = sqlite3.connect('core/db/data_bases/users.db')
     cursor = conn.cursor()

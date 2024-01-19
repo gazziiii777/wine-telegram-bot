@@ -12,7 +12,10 @@ buttons_1 = [
         InlineKeyboardButton(text='Акции', callback_data='sales')
     ],
     [
-        InlineKeyboardButton(text='Корзина', callback_data='Basket')
+        InlineKeyboardButton(text='Корзина', callback_data='basket')
+    ],
+    [
+        InlineKeyboardButton(text='Промокод', callback_data='promo_code')
     ],
     [
         InlineKeyboardButton(text='FAQ', callback_data='FAQ'),

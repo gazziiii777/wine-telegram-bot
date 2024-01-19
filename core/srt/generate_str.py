@@ -7,11 +7,12 @@ async def wine_info_str(wine_list, wine_list_info, shopping_cart, count):
 
 
 async def placing_an_order(shopping, your_profile):
-    bill = await generate_bill(shopping)
+    bill = await generate_bill(shopping, your_profile[1])
+    print(bill)
     shopping_str = f"<b>Контактные данные:</b>\nТелеграмм: @{your_profile[2]}\nФИО: {your_profile[3]}\nНомер телефона: {your_profile[4]}\nАдрес доставки: {your_profile[5]}\nПочта: {your_profile[6]}\n\n <b>Ваш заказ:</b>\n"
     for item in shopping:
         shopping_str += f"• {item[1]} - {int(item[-1]) * int(item[-2])} ₽ ({item[-2]} шт.)\n"
-    shopping_str += f"\n---------------------\n<b>Итог: {bill} ₽</b>"
+    shopping_str += f"\n---------------------\n{f"<b>Итог: {bill[0]} ₽</b>"if bill[0]==bill[1] else f"<s>Цена: {bill[0]} ₽</s>\n<b>🔥 Цена с учетом промокода: {bill[1]} ₽</b> 🔥"}"
     return shopping_str
 
 

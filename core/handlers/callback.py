@@ -1,4 +1,5 @@
 from aiogram import F
+from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, FSInputFile, InputMediaPhoto
 
 from core.dispatcher import dp, bot
@@ -8,6 +9,7 @@ from core.db.wine import assortment_wine
 from core.db.shoping_cart import shopping_cart_checker, shopping_add_item, shopping_delete_item, shopping_cart_get, \
     increase_count
 from core.srt.generate_str import wine_info_str, placing_an_order, shopping_cart_basket_str
+from core.FSM.FSM import FSMPromoCode
 
 wine_list = []
 shopping_cart = []
@@ -275,15 +277,15 @@ async def basket(callback: CallbackQuery):
     global shopping_cart_basket
     shopping_cart_basket = await shopping_cart_get(callback.from_user.id)
     if len(shopping_cart_basket) != 0:
+        await callback.message.delete()
         count = 0
         basket_str = await shopping_cart_basket_str(shopping_cart_basket, count)
-        await bot.edit_message_media(
-            chat_id=callback.message.chat.id,
-            message_id=callback.message.message_id,
-            media=InputMediaPhoto(
-                media=FSInputFile(f"core/db/data_bases/images/{shopping_cart_basket[count][2]}.jpg"),
-                caption=basket_str
+        await bot.send_photo(
+            callback.from_user.id,
+            photo=FSInputFile(
+                path=f"core/db/data_bases/images/{shopping_cart_basket[count][2]}.jpg",
             ),
+            caption=basket_str,
             reply_markup=basket_keyboard.basket_carousel,
         )
     else:
@@ -303,3 +305,12 @@ async def сheckout(callback: CallbackQuery):
         text=f"{shopping_str}",
         reply_markup=assortment_keyboard.sparking_wine
     )
+
+
+@dp.callback_query(F.data == "promo_code")
+async def promo_code(callback: CallbackQuery, state: FSMContext):
+    await callback.message.edit_text(
+        text="Введите промкод",
+    )
+    # Устанавливаем состояние ожидания ввода имени
+    await state.set_state(FSMPromoCode.promo_code)
