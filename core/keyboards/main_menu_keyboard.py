@@ -22,6 +22,5 @@ buttons_1 = [
         InlineKeyboardButton(text='Написать сомелье', callback_data='write_sommelier')
     ],
 ]
-
 # Создаем объект инлайн-клавиатуры
 main_menu = InlineKeyboardMarkup(inline_keyboard=buttons_1)

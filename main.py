@@ -4,7 +4,7 @@ import logging
 from core.settings import settings
 from core.dispatcher import bot, dp
 from core.handlers import commands, callback
-
+from core.admin_panel.headlers import command_admin
 
 async def start_bot():
     await bot.send_message(chat_id=settings.bots.admin_id, text='Бот запущен')
