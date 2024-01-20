@@ -17,11 +17,12 @@ async def check_promo(user_id, promo_code):
     cursor.execute(f"SELECT * FROM promo")
     rows = cursor.fetchall()
     for row in rows:
+        print(row)
         if promo_code == row[1]:
+            conn.close()
             return await promo_wind(user_id, row)
-        else:
-            return 0
     conn.close()
+    return 0
 
 
 async def promo_wind(user_id, promo_code_row):
@@ -45,4 +46,4 @@ async def add_new_promo(promo_code_name, promo_code_value):
         cursor.execute("INSERT INTO promo (promo_code, value) VALUES (?, ?)", (promo_code_name, promo_code_value))
     conn.commit()
     conn.close()
-    return f"Промокод {promo_code_name} добавлен, доющий скидку в {int(100 * float(promo_code_value))} %"
+    return f"Промокод {promo_code_name} добавлен, дающий скидку в {int(100 * float(promo_code_value))} %"

@@ -6,7 +6,7 @@ from aiogram.types import Message
 
 from core.FSM.FSM import FSMPromoCodeAdd
 from core.dispatcher import dp
-from core.admin_panel.keyboard_admin import main_admin_keyboard
+from core.admin_panel.keyboard_admin import admin_keyboard
 from core.db.promo_code import add_new_promo
 from core.admin_panel.headlers import callback_admin
 
@@ -15,7 +15,7 @@ from core.admin_panel.headlers import callback_admin
 async def cmd_main_menu(message: Message):
     await message.answer(
         text="Панель Администратора",
-        reply_markup=main_admin_keyboard.keyboard
+        reply_markup=admin_keyboard.keyboard
     )
 
 
@@ -37,10 +37,13 @@ async def process_question_to_support(message: Message, state: FSMContext):
     print(promo_add)
     if promo_add == 0:
         await message.answer(
-            text=f"Промокод {answer.get('promo_code_name')} уже есть в таблицеы"
+            text=f"Промокод {answer.get('promo_code_name')} уже есть в таблицеы",
+            reply_markup=admin_keyboard.promo_add_keyboard
+
         )
     else:
         await message.answer(
-            text=promo_add
+            text=promo_add,
+            reply_markup=admin_keyboard.promo_add_keyboard
         )
     await state.clear()
