@@ -10,3 +10,6 @@ core/db/sdsd.py
 core/srt/__pycache__/
 core/utils/__pycache__/
 core/FSM/__pycache__/
+core/admin_panel/__pycache__/
+core/admin_panel/headlers/__pycache__/
+core/admin_panel/keyboard_admin/__pycache__/
