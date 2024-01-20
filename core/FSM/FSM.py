@@ -9,3 +9,7 @@ class FSMPromoCode(StatesGroup):
 class FSMPromoCodeAdd(StatesGroup):
     promo_code_name = State()  # Состояние ожидания ввода промокода
     promo_code_value = State()
+
+
+class FSMPromoCodeDelete(StatesGroup):
+    promo_code_name = State()  # Состояние ожидания ввода промокода
