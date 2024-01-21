@@ -40,8 +40,9 @@ async def creating_user_promo_code(user_id):
     cursor.execute(f"SELECT * FROM '{user_id}_promo' WHERE id = 1")
     row = cursor.fetchone()
     if row:
-        cursor.execute(f"UPDATE \"{user_id}_promo\" SET promo_code = ? WHERE id = 1", (0,))
-        conn.commit()
+        # cursor.execute(f"UPDATE \"{user_id}_promo\" SET promo_code = ? WHERE id = 1", (0,))
+        # conn.commit()
+        conn.close()
     else:
         # Если строки с id = 1 нет, то выполняем добавление
         cursor.execute(f"INSERT INTO \"{user_id}_promo\" (promo_code) VALUES (?)", (0,))

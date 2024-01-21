@@ -28,8 +28,8 @@ async def check_promo(user_id, promo_code):
     cursor.execute(f"SELECT * FROM promo")
     rows = cursor.fetchall()
     for row in rows:
-        print(row)
         if promo_code == row[1]:
+            await delete_promo_code(promo_code)
             conn.close()
             return await promo_wind(user_id, row)
     conn.close()
