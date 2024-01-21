@@ -13,3 +13,13 @@ class FSMPromoCodeAdd(StatesGroup):
 
 class FSMPromoCodeDelete(StatesGroup):
     promo_code_name = State()  # Состояние ожидания ввода промокода
+
+
+class FSMUserRegister(StatesGroup):
+    telegram_user_name = State()  # Состояние ожидания ввода промокода
+    full_name = State()
+    phone_number = State()
+    delivery_address = State()
+    mail = State()
+
+

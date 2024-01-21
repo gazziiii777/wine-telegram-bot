@@ -66,3 +66,12 @@ async def profile_info(user_id):
                 return list_row
             else:
                 return list_row
+
+
+async def new_profile_info(user_id, username, full_name, phone_number, home_addresses, mail):
+    conn = sqlite3.connect('core/db/data_bases/users.db')
+    cursor = conn.cursor()
+    cursor.execute("UPDATE users SET username=?, full_name=?, phone_number=?, home_addresses=?, mail=? WHERE user_id=?",
+                   (username, full_name, phone_number, home_addresses, mail, user_id))
+    conn.commit()
+    conn.close()

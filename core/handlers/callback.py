@@ -9,7 +9,7 @@ from core.db.wine import assortment_wine
 from core.db.shoping_cart import shopping_cart_checker, shopping_add_item, shopping_delete_item, shopping_cart_get, \
     increase_count
 from core.srt.generate_str import wine_info_str, placing_an_order, shopping_cart_basket_str
-from core.FSM.FSM import FSMPromoCode
+from core.FSM.FSM import FSMPromoCode, FSMUserRegister
 
 wine_list = []
 shopping_cart = []
@@ -33,6 +33,15 @@ async def profile(callback: CallbackQuery):
         text=f"<b>Ваш профиль:</b>\n<b>ник в телеграмме:</b> @{your_profile[2]}\n<b>ФИО</b> {your_profile[3]}\n<b>номер телефона:</b> {your_profile[4]}\n<b>адрес доставки:</b> {your_profile[5]}\n<b>Почта:</b> {your_profile[6]}",
         reply_markup=profile_keyboard.profile
     )
+
+
+@dp.callback_query(F.data == "edit_profile")
+async def edit_profile(callback: CallbackQuery, state: FSMContext):
+    await callback.message.edit_text(
+        text="Введите Ваш ник в телеграме",
+    )
+    # Устанавливаем состояние ожидания ввода имени
+    await state.set_state(FSMUserRegister.telegram_user_name)
 
 
 @dp.callback_query(F.data == "assortment")
